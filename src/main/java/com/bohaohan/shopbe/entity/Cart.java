@@ -6,21 +6,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Category {
+public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(columnDefinition = "NVARCHAR(255)")
-    private String name;
+    @OneToOne(mappedBy = "cart", cascade = CascadeType.ALL)
+    private CartElement cartElement;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    private List<Product> products;
+    @OneToOne
+    @JoinColumn(name = "accountId")
+    private Account account;
+
 }
