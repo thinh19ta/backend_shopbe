@@ -23,6 +23,8 @@ public class Product {
 
     private double price;
 
+    private String imageURL;
+
     @Column(columnDefinition = "NVARCHAR(MAX)")
     private String description;
 

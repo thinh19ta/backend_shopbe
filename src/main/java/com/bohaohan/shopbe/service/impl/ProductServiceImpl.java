@@ -24,7 +24,7 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductResponse> getAllProducts() {
         List<Product> products = productRepository.findAll();
         List<ProductResponse> productResponses = products.stream().map(
-                product -> new ProductResponse(product.getId(), product.getName(), product.getPrice(), product.getDescription())
+                product -> new ProductResponse(product.getId(), product.getName(), product.getPrice(), product.getDescription(), product.getImageURL())
         ).toList();
         return productResponses;
     }
@@ -33,7 +33,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponse getProductById(Long id) {
         Optional<Product> optionalProduct = productRepository.findById(id);
         return optionalProduct.map(product ->
-                        new ProductResponse(product.getId(), product.getName(), product.getPrice(), product.getDescription()))
+                        new ProductResponse(product.getId(), product.getName(), product.getPrice(), product.getDescription(), product.getImageURL()))
                 .orElse(null);
     }
 
@@ -41,7 +41,7 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductResponse> getProductsByCategory(Long categoryId) {
         List<Product> products = productRepository.findByCategoryId(categoryId);
         List<ProductResponse> productResponses = products.stream().map(
-                product -> new ProductResponse(product.getId(), product.getName(), product.getPrice(), product.getDescription())
+                product -> new ProductResponse(product.getId(), product.getName(), product.getPrice(), product.getDescription(), product.getImageURL())
         ).toList();
         return productResponses;
     }
