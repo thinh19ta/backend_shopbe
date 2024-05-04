@@ -33,5 +33,5 @@ public class Product {
     private Category category;
 
     @ManyToMany(mappedBy = "products", cascade = CascadeType.ALL)
-    private Set<CartElement> cartProductLists;
+    private Set<Cart> carts;
 }

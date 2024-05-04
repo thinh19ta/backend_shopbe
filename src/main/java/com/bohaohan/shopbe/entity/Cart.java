@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Entity
 @Getter
 @Setter
@@ -16,8 +18,9 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(mappedBy = "cart", cascade = CascadeType.ALL)
-    private CartElement cartElement;
+    @ManyToMany
+    @JoinTable(name = "cart_product", joinColumns = @JoinColumn(name = "cartId"), inverseJoinColumns = @JoinColumn(name = "productId"))
+    private Set<Product> products;
 
     @OneToOne
     @JoinColumn(name = "accountId")

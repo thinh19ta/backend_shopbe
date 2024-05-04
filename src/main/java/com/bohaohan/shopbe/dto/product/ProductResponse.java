@@ -1,5 +1,6 @@
 package com.bohaohan.shopbe.dto.product;
 
+import com.bohaohan.shopbe.entity.Product;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,4 +16,5 @@ public class ProductResponse {
     private double price;
     private String description;
     private String imageURL;
+
 }
