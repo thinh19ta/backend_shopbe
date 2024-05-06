@@ -1,4 +1,4 @@
-package com.bohaohan.shopbe.dto.account;
+package com.bohaohan.shopbe.dto.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,11 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AccountRequest {
-    private String firstName;
-    private String lastName;
+public class AuthRequest {
     private String userName;
     private String password;
-    private String roles;
-    private String avatarUrl;
 }

@@ -27,6 +27,10 @@ public class Account {
 
     private String password;
 
+    private String roles;
+
+    private String avatarUrl;
+
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
     private Cart cart;
 
