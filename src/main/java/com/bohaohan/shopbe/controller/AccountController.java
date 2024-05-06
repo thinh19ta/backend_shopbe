@@ -2,6 +2,8 @@ package com.bohaohan.shopbe.controller;
 
 import com.bohaohan.shopbe.dto.account.AccountRequest;
 import com.bohaohan.shopbe.dto.auth.AuthRequest;
+import com.bohaohan.shopbe.dto.auth.AuthResponse;
+import com.bohaohan.shopbe.entity.Account;
 import com.bohaohan.shopbe.repository.AccountRepository;
 import com.bohaohan.shopbe.service.AccountService;
 import com.bohaohan.shopbe.service.security.JwtService;
@@ -20,22 +22,9 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
-    @Autowired
-    AuthenticationManager authenticationManager;
-
-    @Autowired
-    JwtService jwtService;
-
     @PostMapping(path = "/login")
-    public String authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
-        Authentication authentication =
-                authenticationManager.authenticate(
-                        new UsernamePasswordAuthenticationToken(authRequest.getUserName(), authRequest.getPassword()));
-        if (authentication.isAuthenticated()) {
-            return jwtService.generateToken(authRequest.getUserName());
-        } else {
-            throw new UsernameNotFoundException("Invalid user request");
-        }
+    public AuthResponse authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
+        return accountService.authenticate(authRequest);
     }
 
     @PostMapping(path = "/register")
