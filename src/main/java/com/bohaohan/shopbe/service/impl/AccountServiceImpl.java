@@ -52,7 +52,6 @@ public class AccountServiceImpl implements AccountService {
 
         Account account = accountRepository.findByUserName(userName)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-
         try {
             // Authenticate user
             Authentication authentication =
