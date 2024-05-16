@@ -1,6 +1,7 @@
 package com.bohaohan.shopbe.service.impl;
 
 import com.bohaohan.shopbe.dto.account.AccountRequest;
+import com.bohaohan.shopbe.dto.account.AccountResponse;
 import com.bohaohan.shopbe.dto.auth.AuthRequest;
 import com.bohaohan.shopbe.dto.auth.AuthResponse;
 import com.bohaohan.shopbe.entity.Account;
@@ -40,7 +41,9 @@ public class AccountServiceImpl implements AccountService {
         account.setUserName(accountRequest.getUserName());
         account.setPassword(passwordEncoder.encode(accountRequest.getPassword()));
         account.setRoles(accountRequest.getRoles());
-        account.setAvatarUrl(accountRequest.getAvatarUrl());
+        account.setEmail(accountRequest.getEmail());
+        account.setPhone(accountRequest.getPhone());
+        account.setAddress(accountRequest.getAddress());
         accountRepository.save(account);
         return "Add success";
     }
@@ -69,5 +72,11 @@ public class AccountServiceImpl implements AccountService {
             // Handle incorrect credentials
             throw new BadCredentialsException("Invalid username or password");
         }
+    }
+
+    @Override
+    public AccountResponse getAccountById(Long id) {
+        Account account = accountRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Can not find the ID"));
+        return new AccountResponse(account.getId(), account.getFirstName(), account.getLastName(), account.getEmail(), account.getPhone(), account.getAddress());
     }
 }

@@ -15,5 +15,7 @@ public class AccountRequest {
     private String userName;
     private String password;
     private String roles;
-    private String avatarUrl;
+    private String email;
+    private String phone;
+    private String address;
 }
