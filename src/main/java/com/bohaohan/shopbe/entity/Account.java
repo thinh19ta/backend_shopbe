@@ -18,10 +18,7 @@ public class Account {
     private Long id;
 
     @Column(columnDefinition = "NVARCHAR(255)")
-    private String firstName;
-
-    @Column(columnDefinition = "NVARCHAR(255)")
-    private String lastName;
+    private String fullName;
 
     private String userName;
 
@@ -30,7 +27,9 @@ public class Account {
     private String roles;
 
     private String email;
+
     private String phone;
+
     private String address;
 
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)

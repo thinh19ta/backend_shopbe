@@ -10,8 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AccountRequest {
-    private String firstName;
-    private String lastName;
+    private String fullName;
     private String userName;
     private String password;
     private String roles;

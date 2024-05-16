@@ -36,8 +36,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public String addNewAccount(AccountRequest accountRequest) {
         Account account = new Account();
-        account.setFirstName(accountRequest.getFirstName());
-        account.setLastName(accountRequest.getLastName());
+        account.setFullName(accountRequest.getFullName());
         account.setUserName(accountRequest.getUserName());
         account.setPassword(passwordEncoder.encode(accountRequest.getPassword()));
         account.setRoles(accountRequest.getRoles());
@@ -77,6 +76,6 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountResponse getAccountById(Long id) {
         Account account = accountRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Can not find the ID"));
-        return new AccountResponse(account.getId(), account.getFirstName(), account.getLastName(), account.getEmail(), account.getPhone(), account.getAddress());
+        return new AccountResponse(account.getId(), account.getFullName(), account.getEmail(), account.getPhone(), account.getAddress());
     }
 }
