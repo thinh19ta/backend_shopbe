@@ -34,7 +34,13 @@ public class AccountServiceImpl implements AccountService {
     JwtService jwtService;
 
     @Override
-    public String addNewAccount(AccountRequest accountRequest) {
+    public boolean addNewAccount(AccountRequest accountRequest) {
+        boolean isExist = accountRepository.existsByUserName(accountRequest.getUserName());
+
+        if (isExist) {
+            return false;
+        }
+
         Account account = new Account();
         account.setFullName(accountRequest.getFullName());
         account.setUserName(accountRequest.getUserName());
@@ -44,7 +50,8 @@ public class AccountServiceImpl implements AccountService {
         account.setPhone(accountRequest.getPhone());
         account.setAddress(accountRequest.getAddress());
         accountRepository.save(account);
-        return "Add success";
+
+        return true;
     }
 
     @Override

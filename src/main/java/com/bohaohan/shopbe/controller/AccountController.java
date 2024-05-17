@@ -10,6 +10,7 @@ import com.bohaohan.shopbe.service.AccountService;
 import com.bohaohan.shopbe.service.security.JwtService;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,7 +27,7 @@ public class AccountController {
     private AccountService accountService;
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<AccountResponse> getAccountById(@PathVariable Long id){
+    public ResponseEntity<AccountResponse> getAccountById(@PathVariable Long id) {
         return ResponseEntity.ok(accountService.getAccountById(id));
     }
 
@@ -36,7 +37,7 @@ public class AccountController {
     }
 
     @PostMapping(path = "/register")
-    public String addNewAccount(@RequestBody AccountRequest accountRequest) {
+    public boolean addNewAccount(@RequestBody AccountRequest accountRequest) {
         return accountService.addNewAccount(accountRequest);
     }
 

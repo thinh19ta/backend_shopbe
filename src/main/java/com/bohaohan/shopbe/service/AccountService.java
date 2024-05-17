@@ -6,7 +6,7 @@ import com.bohaohan.shopbe.dto.auth.AuthRequest;
 import com.bohaohan.shopbe.dto.auth.AuthResponse;
 
 public interface AccountService {
-    String addNewAccount(AccountRequest accountRequest);
+    boolean addNewAccount(AccountRequest accountRequest);
     AuthResponse authenticate(AuthRequest authRequest);
     AccountResponse getAccountById(Long id);
 }
