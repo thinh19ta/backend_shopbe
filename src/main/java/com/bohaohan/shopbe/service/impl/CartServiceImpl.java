@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -86,11 +87,11 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public CartResponse getCartByAccountId(Long accountId) {
+    public List<ProductResponse> getCartByAccountId(Long accountId) {
         Account account = accountRepository.findById(accountId).orElse(null);
         Cart cart = account.getCart();
         if (cart != null) {
-            Set<ProductResponse> productResponses = cart.getProducts().stream()
+            List<ProductResponse> productResponses = cart.getProducts().stream()
                     .map(productChild -> new ProductResponse(
                             productChild.getId(),
                             productChild.getName(),
@@ -98,8 +99,8 @@ public class CartServiceImpl implements CartService {
                             productChild.getDescription(),
                             productChild.getImageURL()
                     ))
-                    .collect(Collectors.toSet());
-            return new CartResponse(productResponses);
+                    .collect(Collectors.toList());
+            return productResponses;
         }
         return null;
     }
