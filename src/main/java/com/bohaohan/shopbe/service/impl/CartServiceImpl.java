@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -111,6 +112,22 @@ public class CartServiceImpl implements CartService {
         Product product = productRepository.findById(cartRequest.getProductId()).orElse(null);
         account.getCart().getProducts().remove(product);
         accountRepository.save(account);
+    }
+
+    @Override
+    public void removeCart(Long accountId) {
+        Optional<Account> accountOpt = accountRepository.findById(accountId);
+        if (!accountOpt.isPresent()) {
+            throw new RuntimeException("Account not found");
+        }
+        Account account = accountOpt.get();
+        Cart cart = account.getCart();
+        if (cart != null) {
+            cart.getProducts().clear();
+            account.setCart(null);
+            cartRepository.delete(cart);
+            accountRepository.save(account);
+        }
     }
 
 }

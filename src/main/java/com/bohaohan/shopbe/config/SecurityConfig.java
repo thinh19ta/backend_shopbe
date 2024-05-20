@@ -39,6 +39,8 @@ public class SecurityConfig {
             auth.requestMatchers("/shopbe/accounts/**",
                             "/shopbe/products/**",
                             "/shopbe/cart/**",
+                            "/shopbe/order/**",
+
                             "/shopbe/categories/**")
                     .permitAll()
                     .requestMatchers("/shopbe/**")

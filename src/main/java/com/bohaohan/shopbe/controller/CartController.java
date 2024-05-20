@@ -1,8 +1,6 @@
 package com.bohaohan.shopbe.controller;
 
 import com.bohaohan.shopbe.dto.cart.CartRequest;
-import com.bohaohan.shopbe.dto.cart.CartResponse;
-import com.bohaohan.shopbe.entity.Cart;
 import com.bohaohan.shopbe.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +22,12 @@ public class CartController {
     @DeleteMapping
     public String removeProductFromCart(@RequestBody CartRequest cartRequest){
         cartService.removeProductFromCart(cartRequest);
+        return "removed successfully!";
+    }
+
+    @DeleteMapping("/{id}")
+    public String removeCart(@PathVariable int id){
+        cartService.removeCart((long) id);
         return "removed successfully!";
     }
 

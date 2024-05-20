@@ -12,4 +12,6 @@ public interface CartService {
     List<ProductResponse> getCartByAccountId(Long accountId);
 
     void removeProductFromCart(CartRequest cartRequest);
+
+    void removeCart(Long accountId);
 }
