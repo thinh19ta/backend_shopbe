@@ -1,6 +1,5 @@
-package com.bohaohan.shopbe.dto.product;
+package com.bohaohan.shopbe.dto.cartProduct;
 
-import com.bohaohan.shopbe.entity.Product;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,10 +9,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductResponse {
+public class CartProductResponse {
     private Long id;
     private String name;
     private double price;
     private String description;
     private String imageURL;
+    private int quantity;
 }

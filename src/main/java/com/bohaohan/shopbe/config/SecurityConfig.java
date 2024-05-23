@@ -40,7 +40,6 @@ public class SecurityConfig {
                             "/shopbe/products/**",
                             "/shopbe/cart/**",
                             "/shopbe/order/**",
-
                             "/shopbe/categories/**")
                     .permitAll()
                     .requestMatchers("/shopbe/**")

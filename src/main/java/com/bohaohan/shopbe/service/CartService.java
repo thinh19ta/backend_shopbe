@@ -1,17 +1,17 @@
 package com.bohaohan.shopbe.service;
 
-import com.bohaohan.shopbe.dto.cart.CartRequest;
-import com.bohaohan.shopbe.dto.cart.CartResponse;
-import com.bohaohan.shopbe.dto.product.ProductResponse;
+
+import com.bohaohan.shopbe.dto.cartProduct.CartProductRequest;
+import com.bohaohan.shopbe.dto.cartProduct.CartProductResponse;
 
 import java.util.List;
 
 public interface CartService {
-    CartResponse addCart(CartRequest cartRequest);
+    List<CartProductResponse> addToCart(CartProductRequest cartProductRequest);
 
-    List<ProductResponse> getCartByAccountId(Long accountId);
+    List<CartProductResponse> getCartByAccountId(Long accountId);
 
-    void removeProductFromCart(CartRequest cartRequest);
+    void removeCartProductFromCart(CartProductRequest cartProductRequest);
 
     void removeCart(Long accountId);
 }

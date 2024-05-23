@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -32,6 +33,6 @@ public class Product {
     @JoinColumn(name = "categoryId")
     private Category category;
 
-    @ManyToMany(mappedBy = "products", cascade = CascadeType.ALL)
-    private Set<Cart> carts;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<CartProduct> cartProducts;
 }
