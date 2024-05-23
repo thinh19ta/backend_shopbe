@@ -70,6 +70,18 @@ public class CartServiceImpl implements CartService {
                 .orElseThrow(() -> new EntityNotFoundException("Account not found with id: " + cartProductRequest.getAccountId()));
         Product product = productRepository.findById(cartProductRequest.getProductId())
                 .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + cartProductRequest.getProductId()));
+        List<CartProduct> cartProductList = cartProductRepository.findAll();
+
+        //Check xem co bi trung cart id voi product id
+        if (account.getCart() != null) {
+            for (CartProduct cartProduct : cartProductList) {
+                if (Objects.equals(cartProduct.getCart().getId(), account.getCart().getId())
+                        && Objects.equals(cartProduct.getProduct().getId(), cartProductRequest.getProductId())) {
+                    System.out.println("Trung lap roi, thoat thoi");
+                    return null;
+                }
+            }
+        }
         CartProduct cartProduct = new CartProduct();
         cartProduct.setProduct(product);
         cartProduct.setQuantity(cartProductRequest.getQuantity());
@@ -144,6 +156,18 @@ public class CartServiceImpl implements CartService {
             cartRepository.delete(cart);
             accountRepository.save(account);
         }
+    }
+
+    @Override
+    public CartProductResponse updateQuantity(CartProductRequest cartProductRequest) {
+        CartProduct cartProduct = cartProductRepository.findById(cartProductRequest.getId()).orElseThrow(
+                () -> new EntityNotFoundException("CartProduct not found with Id " + cartProductRequest.getId()));
+        cartProduct.setQuantity(cartProductRequest.getQuantity());
+        cartProductRepository.save(cartProduct);
+
+        return new CartProductResponse(cartProduct.getId(), cartProduct.getProduct().getName(), cartProduct.getProduct().getPrice(),
+                cartProduct.getProduct().getDescription(),
+                cartProduct.getProduct().getImageURL(), cartProduct.getQuantity());
     }
 
 }

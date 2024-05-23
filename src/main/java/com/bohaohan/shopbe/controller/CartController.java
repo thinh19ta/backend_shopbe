@@ -38,4 +38,9 @@ public class CartController {
         return ResponseEntity.ok(cartService.getCartByAccountId((long) id));
     }
 
+    @PutMapping
+    public ResponseEntity<?> updateQuantity(@RequestBody CartProductRequest cartProductRequest) {
+        return ResponseEntity.ok(cartService.updateQuantity(cartProductRequest));
+    }
+
 }
