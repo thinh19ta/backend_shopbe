@@ -15,6 +15,7 @@ import com.bohaohan.shopbe.repository.CartRepository;
 import com.bohaohan.shopbe.repository.ProductRepository;
 import com.bohaohan.shopbe.service.CartService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -137,31 +138,70 @@ public class CartServiceImpl implements CartService {
     public void removeCartProductFromCart(CartProductRequest cartProductRequest) {
         Account account = accountRepository.findById(cartProductRequest.getAccountId())
                 .orElseThrow(() -> new EntityNotFoundException("Account not found with id: " + cartProductRequest.getAccountId()));
-        CartProduct cartProduct = cartProductRepository.findById(cartProductRequest.getId()).orElse(null);
+        CartProduct cartProduct = cartProductRepository.findById(cartProductRequest.getId())
+                .orElseThrow(() -> new EntityNotFoundException("CartProduct not found with id: " + cartProductRequest.getId()));
+
+        //Check if request accountId and accountId from cartProduct matched ?
+        if (!Objects.equals(cartProduct.getCart().getAccount().getId(), cartProductRequest.getAccountId())) {
+            return;
+        }
+
+        //Remove cartProduct from cart.
         account.getCart().getCartProducts().remove(cartProduct);
+
+        //Then delete it.
+        cartProductRepository.delete(cartProduct);
+
+        //Save account again.
         accountRepository.save(account);
     }
 
+//    @Override
+//    public void removeAllProductFromCart(Long accountId) {
+//        Account account = accountRepository.findById(accountId)
+//                .orElseThrow(() -> new EntityNotFoundException("Account not found with id: " + accountId));
+//        Cart cart = account.getCart();
+//        if (cart != null) {
+//            System.out.println("Account id: " + account.getId());
+//            System.out.println("Account card id: " + account.getCart().getId());
+//            System.out.println("Account card products size: " + account.getCart().getCartProducts());
+//            System.out.println("Alo");
+//            List<CartProduct> cartProductList = cart.getCartProducts();
+//
+//            for(CartProduct cartProduct : cartProductList){
+//                cartProductRepository.delete(cartProduct);
+//            }
+//            cart.getCartProducts().clear();
+//            cart.setCartProducts(null);
+//            cartRepository.delete(cart);
+//            account.setCart(null);
+//            accountRepository.save(account);
+//        }
+//    }
+
     @Override
-    public void removeCart(Long accountId) {
-        Optional<Account> accountOpt = accountRepository.findById(accountId);
-        if (!accountOpt.isPresent()) {
-            throw new RuntimeException("Account not found");
-        }
-        Account account = accountOpt.get();
-        Cart cart = account.getCart();
-        if (cart != null) {
-            cart.getCartProducts().clear();
-            account.setCart(null);
-            cartRepository.delete(cart);
-            accountRepository.save(account);
-        }
+    @Transactional
+    public void removeAllProductFromCart(Long accountId) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new EntityNotFoundException("Account not found with id: " + accountId));
+
+        // Delete all cart products associated with the account's cart
+        cartProductRepository.deleteByCartAccountId(accountId);
+
+        // Clear the cart products list in the cart entity
+        account.getCart().getCartProducts().clear();
+
+        // Save the updated account entity
+        accountRepository.save(account);
     }
+
 
     @Override
     public CartProductResponse updateQuantity(CartProductRequest cartProductRequest) {
         CartProduct cartProduct = cartProductRepository.findById(cartProductRequest.getId()).orElseThrow(
                 () -> new EntityNotFoundException("CartProduct not found with Id " + cartProductRequest.getId()));
+
+        //Get cartProduct above and then set new quantity
         cartProduct.setQuantity(cartProductRequest.getQuantity());
         cartProductRepository.save(cartProduct);
 

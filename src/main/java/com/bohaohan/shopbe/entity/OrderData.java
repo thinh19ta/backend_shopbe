@@ -16,6 +16,5 @@ public class OrderData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(columnDefinition = "NVARCHAR(MAX)")
-    private String orderData;
+
 }
