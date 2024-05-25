@@ -26,7 +26,7 @@ public class CartController {
     }
 
     @DeleteMapping("/{id}")
-    public String removeCart(@PathVariable int id) {
+    public String removeCartByAccountId(@PathVariable int id) {
         cartService.removeAllProductFromCart((long) id);
         return "removed successfully!";
     }

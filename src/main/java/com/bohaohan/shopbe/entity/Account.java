@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -34,5 +36,8 @@ public class Account {
 
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
     private Cart cart;
+
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    private List<OrderData> orderData;
 
 }

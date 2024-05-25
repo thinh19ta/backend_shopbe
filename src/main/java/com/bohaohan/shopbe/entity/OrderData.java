@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -16,5 +19,15 @@ public class OrderData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "accountId")
+    private Account account;
 
+    @OneToMany(mappedBy = "orderData", cascade = CascadeType.ALL)
+    private List<OrderProduct> orderProducts;
+
+    private Date orderDate;
+    private String paymentMethod;
+    private String paymentStatus;
+    private String status;
 }
