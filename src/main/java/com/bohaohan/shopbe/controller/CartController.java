@@ -14,9 +14,20 @@ public class CartController {
     @Autowired
     CartService cartService;
 
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getCartByAccountId(@PathVariable int id) {
+        return ResponseEntity.ok(cartService.getCartByAccountId((long) id));
+    }
+
     @PostMapping
     public ResponseEntity<?> addToCart(@RequestBody CartProductRequest cartProductRequest) {
         return ResponseEntity.ok(cartService.addToCart(cartProductRequest));
+    }
+
+    @PutMapping
+    public ResponseEntity<?> updateQuantity(@RequestBody CartProductRequest cartProductRequest) {
+        return ResponseEntity.ok(cartService.updateQuantity(cartProductRequest));
     }
 
     @DeleteMapping
@@ -31,14 +42,5 @@ public class CartController {
         return "removed successfully!";
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getCartByAccountId(@PathVariable int id) {
-        return ResponseEntity.ok(cartService.getCartByAccountId((long) id));
-    }
-
-    @PutMapping
-    public ResponseEntity<?> updateQuantity(@RequestBody CartProductRequest cartProductRequest) {
-        return ResponseEntity.ok(cartService.updateQuantity(cartProductRequest));
-    }
 
 }
