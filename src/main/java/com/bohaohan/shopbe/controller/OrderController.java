@@ -1,10 +1,15 @@
 package com.bohaohan.shopbe.controller;
 
 import com.bohaohan.shopbe.dto.orderData.OrderDataRequest;
+import com.bohaohan.shopbe.dto.orderData.OrderDataResponse;
 import com.bohaohan.shopbe.entity.OrderData;
 import com.bohaohan.shopbe.service.OrderService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping(path = "/shopbe/order")
@@ -14,20 +19,14 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    @GetMapping
-    private String hello() {
-        return "Hello";
+    @GetMapping(path = "/{id}")
+    private ResponseEntity<List<OrderDataResponse>> getAllOrderDataByAccountId(@PathVariable int id) {
+        return ResponseEntity.ok(orderService.getAllOrderDataByAccountId((long) id));
     }
 
     @PostMapping
-    private void addOrderData(@RequestBody  OrderDataRequest orderDataRequest) {
-        orderService.addOrderData(orderDataRequest);
-        System.out.println("ID " + orderDataRequest.getId());
-        System.out.println("Account ID " + orderDataRequest.getAccountId());
-        System.out.println("Status " + orderDataRequest.getStatus());
-        System.out.println("Payment status "  + orderDataRequest.getPaymentStatus());
-        System.out.println("Payment method " + orderDataRequest.getPaymentMethod());
-        System.out.println("List order prodduct" + orderDataRequest.getOrderProductRequests().get(0).getProductId());
+    private ResponseEntity<OrderDataResponse> addOrderData(@RequestBody OrderDataRequest orderDataRequest) {
+        return ResponseEntity.ok(orderService.addOrderData(orderDataRequest));
     }
 
 }
