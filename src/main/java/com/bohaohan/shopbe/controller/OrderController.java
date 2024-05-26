@@ -29,4 +29,9 @@ public class OrderController {
         return ResponseEntity.ok(orderService.addOrderData(orderDataRequest));
     }
 
+    @PostMapping(path = "/test")
+    private ResponseEntity<OrderDataResponse> addOrderDataJustByAccountId(@RequestBody OrderDataRequest orderDataRequest) {
+        return ResponseEntity.ok(orderService.addOrderDataByAccountId(orderDataRequest));
+    }
+
 }

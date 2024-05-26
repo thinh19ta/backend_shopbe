@@ -98,7 +98,77 @@ public class OrderServiceImpl implements OrderService {
         orderDataResponse.setPaymentMethod(orderData.getPaymentMethod());
         orderDataResponse.setOrderProductResponses(
                 orderData.getOrderProducts().stream().map(orderProduct
-                                -> new OrderProductResponse(orderProduct.getId(), orderProduct.getProduct().getId(), orderProduct.getQuantity()))
+                                -> new OrderProductResponse(orderProduct.getId(),
+                                orderProduct.getProduct().getId(),
+                                orderProduct.getProduct().getName(),
+                                orderProduct.getProduct().getPrice(),
+                                orderProduct.getProduct().getDescription(),
+                                orderProduct.getProduct().getImageURL(),
+                                orderProduct.getQuantity()))
+                        .collect(Collectors.toList())
+        );
+
+        return orderDataResponse;
+    }
+
+    @Override
+    public OrderDataResponse addOrderDataByAccountId(OrderDataRequest orderDataRequest) {
+        // Lay ra account.
+        Account account = accountRepository.findById(orderDataRequest.getAccountId())
+                .orElseThrow(() -> new EntityNotFoundException("Account not found with id: " + orderDataRequest.getAccountId()));
+
+        // Chuyen du lieu tu Cart => OrderData => Moi orderData la 1 phat' new,
+        // OrderData chua' List<OrderProduct>, nen cung phai new moi List<OrderProduct>
+        // Sau do map du lieu tu` cart => List<OrderProduct> => add vao` OrderData
+        OrderData orderData = new OrderData();
+        List<OrderProduct> orderProducts = new ArrayList<>();
+
+        // Lay account ra, lay list orderData
+        // Check xem no null hay ko, neu null, new moi, add vao` 1 orderData
+        List<OrderData> orderDataList = account.getOrderData();
+        if (orderDataList == null) {
+            orderDataList = new ArrayList<>();
+        }
+
+        account.getCart().getCartProducts().forEach(
+            cartProduct -> {
+                OrderProduct orderProduct = new OrderProduct();
+                orderProduct.setProduct(cartProduct.getProduct());
+                orderProduct.setOrderData(orderData);
+                orderProduct.setQuantity(cartProduct.getQuantity());
+                orderProducts.add(orderProduct);
+            }
+        );
+
+        // Luc nay` List<OrderProduct> da~ hoan` thien, tien' hanh` add vao` orderData
+        orderData.setOrderProducts(orderProducts);
+        // Set cac field con` lai.
+        orderData.setOrderDate(new Date());
+        orderData.setAccount(account);
+        orderData.setPaymentMethod(orderDataRequest.getPaymentMethod());
+        orderData.setPaymentStatus(orderDataRequest.getPaymentStatus());
+        orderData.setStatus(orderDataRequest.getStatus());
+        // 1 OrderData hoan` thien
+        //Add vao` orderDataList cua account
+        orderDataList.add(orderData);
+
+        //Save lai account
+        accountRepository.save(account);
+
+        //Tra ve orderData vua moi add vao`
+        OrderDataResponse orderDataResponse = new OrderDataResponse();
+        orderDataResponse.setStatus(orderData.getStatus());
+        orderDataResponse.setPaymentStatus(orderData.getPaymentStatus());
+        orderDataResponse.setPaymentMethod(orderData.getPaymentMethod());
+        orderDataResponse.setOrderProductResponses(
+                orderData.getOrderProducts().stream().map(orderProduct
+                                -> new OrderProductResponse(orderProduct.getId(),
+                                orderProduct.getProduct().getId(),
+                                orderProduct.getProduct().getName(),
+                                orderProduct.getProduct().getPrice(),
+                                orderProduct.getProduct().getDescription(),
+                                orderProduct.getProduct().getImageURL(),
+                                orderProduct.getQuantity()))
                         .collect(Collectors.toList())
         );
 
@@ -115,6 +185,10 @@ public class OrderServiceImpl implements OrderService {
                     .map(orderProduct -> new OrderProductResponse(
                             orderProduct.getId(),
                             orderProduct.getProduct().getId(),
+                            orderProduct.getProduct().getName(),
+                            orderProduct.getProduct().getPrice(),
+                            orderProduct.getProduct().getDescription(),
+                            orderProduct.getProduct().getImageURL(),
                             orderProduct.getQuantity()
                     ))
                     .collect(Collectors.toList());

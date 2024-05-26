@@ -12,5 +12,9 @@ import lombok.Setter;
 public class OrderProductResponse {
     private Long id;
     private Long productId;
+    private String name;
+    private double price;
+    private String description;
+    private String imageURL;
     private int quantity;
 }

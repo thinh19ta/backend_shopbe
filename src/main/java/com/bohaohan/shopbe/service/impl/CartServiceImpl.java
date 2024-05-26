@@ -103,6 +103,7 @@ public class CartServiceImpl implements CartService {
         List<CartProductResponse> cartProducts = cart.getCartProducts().stream()
                 .map(cartProduct1 -> new CartProductResponse(
                         cartProduct1.getId(),
+                        cartProduct1.getProduct().getId(),
                         cartProduct1.getProduct().getName(),
                         cartProduct1.getProduct().getPrice(),
                         cartProduct1.getProduct().getDescription(),
@@ -122,6 +123,7 @@ public class CartServiceImpl implements CartService {
             List<CartProductResponse> cartProductResponses = cart.getCartProducts().stream()
                     .map(cartProduct1 -> new CartProductResponse(
                             cartProduct1.getId(),
+                            cartProduct1.getProduct().getId(),
                             cartProduct1.getProduct().getName(),
                             cartProduct1.getProduct().getPrice(),
                             cartProduct1.getProduct().getDescription(),
@@ -205,9 +207,13 @@ public class CartServiceImpl implements CartService {
         cartProduct.setQuantity(cartProductRequest.getQuantity());
         cartProductRepository.save(cartProduct);
 
-        return new CartProductResponse(cartProduct.getId(), cartProduct.getProduct().getName(), cartProduct.getProduct().getPrice(),
+        return new CartProductResponse(cartProduct.getId(),
+                cartProduct.getProduct().getId(),
+                cartProduct.getProduct().getName(),
+                cartProduct.getProduct().getPrice(),
                 cartProduct.getProduct().getDescription(),
-                cartProduct.getProduct().getImageURL(), cartProduct.getQuantity());
+                cartProduct.getProduct().getImageURL(),
+                cartProduct.getQuantity());
     }
 
 }

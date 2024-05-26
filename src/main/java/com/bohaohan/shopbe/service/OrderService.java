@@ -8,5 +8,7 @@ import java.util.List;
 public interface OrderService {
     OrderDataResponse addOrderData(OrderDataRequest orderDataRequest);
 
+    OrderDataResponse addOrderDataByAccountId(OrderDataRequest orderDataRequest);
+
     List<OrderDataResponse> getAllOrderDataByAccountId(Long accountId);
 }
