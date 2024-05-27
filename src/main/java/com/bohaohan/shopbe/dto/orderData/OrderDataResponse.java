@@ -18,5 +18,7 @@ public class OrderDataResponse {
     private List<OrderProductResponse> orderProductResponses;
     private String paymentMethod;
     private String paymentStatus;
+    private double totalPrice;
+    private String orderDate;
     private String status;
 }

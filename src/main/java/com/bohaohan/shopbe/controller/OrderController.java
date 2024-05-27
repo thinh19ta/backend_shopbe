@@ -25,13 +25,14 @@ public class OrderController {
     }
 
     @PostMapping
-    private ResponseEntity<OrderDataResponse> addOrderData(@RequestBody OrderDataRequest orderDataRequest) {
-        return ResponseEntity.ok(orderService.addOrderData(orderDataRequest));
-    }
-
-    @PostMapping(path = "/test")
     private ResponseEntity<OrderDataResponse> addOrderDataJustByAccountId(@RequestBody OrderDataRequest orderDataRequest) {
         return ResponseEntity.ok(orderService.addOrderDataByAccountId(orderDataRequest));
     }
+
+//
+//    @PostMapping(path = "/test")
+//    private ResponseEntity<OrderDataResponse> addOrderData(@RequestBody OrderDataRequest orderDataRequest) {
+//        return ResponseEntity.ok(orderService.addOrderData(orderDataRequest));
+//    }
 
 }

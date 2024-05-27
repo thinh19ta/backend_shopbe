@@ -12,6 +12,7 @@ import com.bohaohan.shopbe.repository.AccountRepository;
 import com.bohaohan.shopbe.repository.OrderDataRepository;
 import com.bohaohan.shopbe.repository.OrderProductRepository;
 import com.bohaohan.shopbe.repository.ProductRepository;
+import com.bohaohan.shopbe.service.CartService;
 import com.bohaohan.shopbe.service.OrderService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -33,10 +34,7 @@ public class OrderServiceImpl implements OrderService {
     private ProductRepository productRepository;
 
     @Autowired
-    private OrderDataRepository orderDataRepository;
-
-    @Autowired
-    private OrderProductRepository orderProductRepository;
+    private CartService cartService;
 
     @Override
     @Transactional
@@ -83,6 +81,7 @@ public class OrderServiceImpl implements OrderService {
         orderData.setAccount(account);
         orderData.setPaymentMethod(orderDataRequest.getPaymentMethod());
         orderData.setPaymentStatus(orderDataRequest.getPaymentStatus());
+        orderData.setTotalPrice(orderDataRequest.getTotalPrice());
         orderData.setStatus(orderDataRequest.getStatus());
         // 1 OrderData hoan` thien
         //Add vao` orderDataList cua account
@@ -94,6 +93,7 @@ public class OrderServiceImpl implements OrderService {
         //Tra ve orderData vua moi add vao`
         OrderDataResponse orderDataResponse = new OrderDataResponse();
         orderDataResponse.setStatus(orderData.getStatus());
+        orderDataResponse.setTotalPrice(orderData.getTotalPrice());
         orderDataResponse.setPaymentStatus(orderData.getPaymentStatus());
         orderDataResponse.setPaymentMethod(orderData.getPaymentMethod());
         orderDataResponse.setOrderProductResponses(
@@ -146,6 +146,7 @@ public class OrderServiceImpl implements OrderService {
         orderData.setOrderDate(new Date());
         orderData.setAccount(account);
         orderData.setPaymentMethod(orderDataRequest.getPaymentMethod());
+        orderData.setTotalPrice(orderDataRequest.getTotalPrice());
         orderData.setPaymentStatus(orderDataRequest.getPaymentStatus());
         orderData.setStatus(orderDataRequest.getStatus());
         // 1 OrderData hoan` thien
@@ -155,11 +156,15 @@ public class OrderServiceImpl implements OrderService {
         //Save lai account
         accountRepository.save(account);
 
+        cartService.removeAllProductFromCart(orderDataRequest.getAccountId());
+
         //Tra ve orderData vua moi add vao`
         OrderDataResponse orderDataResponse = new OrderDataResponse();
         orderDataResponse.setStatus(orderData.getStatus());
+        orderDataResponse.setTotalPrice(orderData.getTotalPrice());
         orderDataResponse.setPaymentStatus(orderData.getPaymentStatus());
         orderDataResponse.setPaymentMethod(orderData.getPaymentMethod());
+        orderDataResponse.setOrderDate(String.valueOf(orderData.getOrderDate()));
         orderDataResponse.setOrderProductResponses(
                 orderData.getOrderProducts().stream().map(orderProduct
                                 -> new OrderProductResponse(orderProduct.getId(),
@@ -198,6 +203,8 @@ public class OrderServiceImpl implements OrderService {
                     orderProductResponses,
                     orderData.getPaymentMethod(),
                     orderData.getPaymentStatus(),
+                    orderData.getTotalPrice(),
+                    String.valueOf(orderData.getOrderDate()),
                     orderData.getStatus()
             );
         }).collect(Collectors.toList());

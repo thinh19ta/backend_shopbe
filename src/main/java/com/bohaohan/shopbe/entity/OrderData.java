@@ -29,5 +29,6 @@ public class OrderData {
     private Date orderDate;
     private String paymentMethod;
     private String paymentStatus;
+    private double totalPrice;
     private String status;
 }

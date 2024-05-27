@@ -19,5 +19,6 @@ public class OrderDataRequest {
     private List<OrderProductRequest> orderProductRequests;
     private String paymentMethod;
     private String paymentStatus;
+    private double totalPrice;
     private String status;
 }
