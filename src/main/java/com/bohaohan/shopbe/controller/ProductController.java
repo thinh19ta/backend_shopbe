@@ -24,6 +24,12 @@ public class ProductController {
         return ResponseEntity.ok(productService.getProductById((long) id));
     }
 
+    @GetMapping("/random/{length}")
+    public ResponseEntity<?> getRandomProducts(@PathVariable int length) {
+        return ResponseEntity.ok(productService.getRandomProductsWithLength(length));
+    }
+
+
     @GetMapping("/category/{id}")
     public ResponseEntity<?> getProductsByCategoryId(@PathVariable int id) {
         return ResponseEntity.ok(productService.getProductsByCategory((long) id));

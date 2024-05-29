@@ -9,8 +9,10 @@ import com.bohaohan.shopbe.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -43,6 +45,24 @@ public class ProductServiceImpl implements ProductService {
         List<ProductResponse> productResponses = products.stream().map(
                 product -> new ProductResponse(product.getId(), product.getName(), product.getPrice(), product.getDescription(), product.getImageURL())
         ).toList();
+        return productResponses;
+    }
+
+    @Override
+    public List<ProductResponse> getRandomProductsWithLength(int length) {
+        List<Product> products = productRepository.findAll();
+
+        // Shuffle the list to randomize the order
+        Collections.shuffle(products);
+
+        // Limit the number of random products returned. Adjust the limit as needed.
+        List<Product> randomProducts = products.stream().limit(length).toList();
+
+        // Convert to ProductResponse
+        List<ProductResponse> productResponses = randomProducts.stream().map(
+                product -> new ProductResponse(product.getId(), product.getName(), product.getPrice(), product.getDescription(), product.getImageURL())
+        ).toList();
+
         return productResponses;
     }
 

@@ -9,5 +9,5 @@ public interface ProductService {
     List<ProductResponse> getAllProducts();
     ProductResponse getProductById(Long id);
     List<ProductResponse> getProductsByCategory(Long categoryId);
-
+    List<ProductResponse> getRandomProductsWithLength(int length);
 }
